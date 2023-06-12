@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "allowJs": true,
+    "outDir": "build",
+    "rootDir": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  }
+}
+
+// npx tsc
+// To compile our code, we'll need to run the tsc command using npx, the Node package executer.
+// tsc will read the tsconfig.json in the current directory,
+// and apply the configuration against the TypeScript compiler to generate the compiled JavaScript code.
+
+// my question is:
+// automaticlly compiled after running server everytime with nodemon or cold start?
+// or is the command npx tsc required everytime?
