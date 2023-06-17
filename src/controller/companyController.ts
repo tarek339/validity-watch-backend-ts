@@ -63,7 +63,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
       to: company.email,
       subject: "Verify your E-Mail",
       html: `<p>Verify your E-Mail to use the App</p>
-            <a href="http://localhost:3000/verify-email?token=${emailToken}">click here to verify</a>      
+            <a href="http://localhost:3000/verify-email?token=${emailToken}">click here to verify and sign in</a>      
       `,
     });
 
@@ -197,12 +197,41 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const company = await Company.findById(req.body.companyId).select(
-      "-password"
+      "-password -confirmPassword"
     );
     res.json(company);
   } catch (err) {
     res.status(401).json({
-      message: "Please sign in",
+      message: "Please log in",
+    });
+  }
+};
+
+// edit company data
+const editProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const company = await Company.findById(req.body.companyId);
+    console.log(company);
+
+    company.firstName = req.body.firstName;
+    company.lastName = req.body.lastName;
+    company.companyName = req.body.companyName;
+    company.ceo = req.body.ceo;
+    company.phoneNumber = req.body.phoneNumber;
+    company.street = req.body.street;
+    company.houseNumber = req.body.houseNumber;
+    company.zipCode = req.body.zipCode;
+    company.city = req.body.city;
+    company.communityLicence = req.body.communityLicence;
+
+    await company.save();
+    res.json({
+      message: "Profile data successfully changed",
+      company,
+    });
+  } catch (err) {
+    res.status(422).json({
+      message: mongooseErrorHandler(err as Error),
     });
   }
 };
@@ -212,4 +241,5 @@ module.exports = {
   verifyAccount,
   signIn,
   getProfile,
+  editProfile,
 };

@@ -4,6 +4,7 @@ const {
   verifyAccount,
   getProfile,
   signIn,
+  editProfile,
 } = require("../controller/companyController");
 const withSignIn = require("../middlewares/withSignIn");
 
@@ -13,5 +14,6 @@ router.post("/sign-up", signUp);
 router.post("/sign-in", signIn);
 router.post("/verify-account", verifyAccount);
 router.get("/profile", withSignIn, getProfile);
+router.put("/edit-profile", withSignIn, editProfile);
 
 module.exports = router;

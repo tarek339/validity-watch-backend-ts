@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 const withSignIn = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.get("Authorization");
-    console.log(token);
+    // console.log(token);
     const tokenData = jwt.verify(token, "secret123");
     req.body.companyId = tokenData.companyId;
-    console.log(req.body.companyId);
+    // console.log(req.body.companyId);
     next();
   } catch (err) {
     res.status(422).json({
