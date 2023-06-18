@@ -389,6 +389,106 @@ const changePassword = async (
   }
 };
 
+// send forgot password email
+const sendForgotPasswordEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const company = await Company.findOne({ email: req.body.email });
+    if (!company) {
+      return res.status(422).json({
+        message: "Company does not exist!",
+      });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    company.forgotPasswordToken = token;
+
+    await company.save();
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "tarekjassine@gmail.com",
+        pass: "wonoytjxbqgxhjtm",
+      },
+    });
+    await transport.sendMail({
+      from: "tarekjassine@gmail.com",
+      to: company.email,
+      subject: "Change the password",
+      html: `<p>Change the password</p>
+            <a href="http://localhost:3000/change-password?token=${token}">click here to reset password</a>      
+      `,
+    });
+    res.json({
+      message: "Please check your email inbox",
+    });
+  } catch (err) {
+    res.status(422).json({
+      message: mongooseErrorHandler(err as Error),
+    });
+  }
+};
+
+// Forgot Password
+const forgotPasswordHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const company = await Company.findOne({
+      forgotPasswordToken: req.body.token,
+    });
+    if (!company) {
+      return res.status(422).json({
+        message: "Incorrect token!",
+      });
+    }
+
+    company.password = req.body.password;
+    company.confirmPassword = req.body.confirmPassword;
+    await company.save();
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "tarekjassine@gmail.com",
+        pass: "wonoytjxbqgxhjtm",
+      },
+    });
+    await transport.sendMail({
+      from: "tarekjassine@gmail.com",
+      to: company.email,
+      subject: "Reset the password",
+      html: `<p>Password successfully reseted and changed</p>`,
+    });
+    res.json({
+      message: "Password successfully changed",
+      company: {
+        _id: company._id,
+        firstName: company.firstName,
+        lastName: company.lastName,
+        companyName: company.companyName,
+        ceo: company.ceo,
+        phoneNumber: company.phoneNumber,
+        email: company.email,
+        street: company.street,
+        houseNumber: company.houseNumber,
+        zipCode: company.zipCode,
+        city: company.city,
+        communityLicence: company.communityLicence,
+        emailVerified: company.emailVerified,
+      },
+    });
+  } catch (err) {
+    res.status(422).json({
+      message: mongooseErrorHandler(err as Error),
+    });
+  }
+};
+
 module.exports = {
   signUp,
   verifyAccount,
@@ -398,4 +498,6 @@ module.exports = {
   editEmail,
   verifyPassword,
   changePassword,
+  sendForgotPasswordEmail,
+  forgotPasswordHandler,
 };
