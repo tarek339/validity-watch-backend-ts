@@ -1,4 +1,4 @@
-const Driver = require("../../models/driverModel");
+const Driver = require("../../model/driverModel");
 import { NextFunction, Request, Response } from "express";
 
 interface ErrorMessage {

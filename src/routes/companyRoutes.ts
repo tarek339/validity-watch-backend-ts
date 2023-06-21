@@ -12,10 +12,11 @@ const {
   forgotPasswordHandler,
 } = require("../controller/company/companyController");
 const withSignIn = require("../middlewares/withSignIn");
+const companyFormValidation = require("../controller/company/companyFormValidation");
 
 const router = express.Router();
 
-router.post("/sign-up", signUp);
+router.post("/sign-up", companyFormValidation, signUp);
 router.post("/sign-in", signIn);
 router.post("/verify-account", verifyAccount);
 router.get("/profile", withSignIn, getProfile);

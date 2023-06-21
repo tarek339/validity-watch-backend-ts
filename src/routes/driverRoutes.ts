@@ -8,7 +8,7 @@ const {
   editDriver,
   deleteAllDrivers,
 } = require("../controller/driver/driverController");
-const driverFormValidation = require("../controller/driver/driverFormValidation");
+const driverFormValidation = require("../controller/driver/driverFromValidation");
 
 const router = express.Router();
 
