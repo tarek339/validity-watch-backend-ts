@@ -10,7 +10,7 @@ const {
   changePassword,
   sendForgotPasswordEmail,
   forgotPasswordHandler,
-} = require("../controller/companyController");
+} = require("../controller/company/companyController");
 const withSignIn = require("../middlewares/withSignIn");
 
 const router = express.Router();

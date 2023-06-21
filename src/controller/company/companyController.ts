@@ -23,13 +23,6 @@ const nodemailer = require("nodemailer");
 // Sign up company
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const emailExist = await Company.findOne({ email: req.body.email });
-    if (emailExist) {
-      return res.status(422).json({
-        message: "E-mail allready exists",
-      });
-    }
-
     const emailToken = crypto.randomBytes(32).toString("hex");
 
     const company = new Company({
