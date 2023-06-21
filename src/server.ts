@@ -6,11 +6,13 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 
 const companyRoutes = require("./routes/companyRoutes");
+const driverRoutes = require("./routes/driverRoutes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/company", companyRoutes);
+app.use("/driver", driverRoutes);
 
 mongoose
   .connect(
