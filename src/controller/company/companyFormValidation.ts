@@ -1,4 +1,4 @@
-const Company = require("../../models/companyModel");
+const Company = require("../../model/companyModel");
 import { NextFunction, Request, Response } from "express";
 
 interface ErrorMessage {

@@ -15,7 +15,7 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const Company = require("../model/companyModel");
+const Company = require("../../model/companyModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
