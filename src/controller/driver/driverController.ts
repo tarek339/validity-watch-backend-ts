@@ -16,30 +16,13 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const getAllDrivers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const drivers = await Driver.find();
-    res.json(drivers);
-  } catch (err) {
-    res.status(422).json({
-      message: mongooseErrorHandler(err as Error),
-    });
-  }
-};
-
 const getCompanyDrivers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const drivers = await Driver.find({
-      companyId: req.params.companyId,
-    });
+    const drivers = await Driver.find({ companyId: req.body.companyId });
     res.json(drivers);
   } catch (err) {
     res.status(422).json({
@@ -66,7 +49,7 @@ const getSingleDriver = async (
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const driver = new Driver({
-      companyId: req.body.companyId,
+      companyId: req.body.id,
       firstName: req.body.firstName.replace(/\s+/g, ""),
       lastName: req.body.lastName.replace(/\s+/g, ""),
       phoneNumber: req.body.phoneNumber.replace(/\s+/g, ""),
@@ -75,14 +58,14 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
       licenceTypExpire: req.body.licenceTypExpire,
       codeNumber: req.body.codeNumber.replace(/\s+/g, ""),
       codeNumberExpire: req.body.codeNumberExpire,
-      driverCardNum: req.body.driverCardNum.replace(/\s+/g, ""),
+      driverCardNumber: req.body.driverCardNumber.replace(/\s+/g, ""),
       driverCardNumberExpire: req.body.driverCardNumberExpire,
     });
 
     await driver.save();
 
     res.json({
-      message: "Fahrerdaten angelegt",
+      message: "Driver successfully created",
       driver: {
         _id: driver._id,
         firstName: driver.firstName,
@@ -115,7 +98,7 @@ const deleteSingleDriver = async (
     const driver = await Driver.find();
 
     res.json({
-      message: "Fahrer wurde gelöscht",
+      message: "Driver deleted",
       driver,
     });
   } catch (err) {
@@ -133,7 +116,7 @@ const deleteAllDrivers = async (
   await Driver.deleteMany();
   const driver = await Driver.find();
   res.json({
-    message: "Alle Fahrer wurden gelöscht",
+    message: "All driver deleted",
     driver,
   });
 };
@@ -155,7 +138,7 @@ const editDriver = async (req: Request, res: Response, next: NextFunction) => {
 
     await driver.save();
     res.json({
-      message: "Fahrerdaten wurden geändert",
+      message: "Driver data changed",
       driver,
     });
   } catch (err) {
@@ -167,7 +150,6 @@ const editDriver = async (req: Request, res: Response, next: NextFunction) => {
 
 module.exports = {
   signUp,
-  getAllDrivers,
   getSingleDriver,
   deleteAllDrivers,
   deleteSingleDriver,

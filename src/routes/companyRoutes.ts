@@ -10,6 +10,7 @@ const {
   changePassword,
   sendForgotPasswordEmail,
   forgotPasswordHandler,
+  deleteAcc,
 } = require("../controller/company/companyController");
 const withSignIn = require("../middlewares/withSignIn");
 const companyFormValidation = require("../controller/company/companyFormValidation");
@@ -26,5 +27,6 @@ router.post("/verify-password", withSignIn, verifyPassword);
 router.put("/change-password", withSignIn, changePassword);
 router.post("/forgot-password-email", sendForgotPasswordEmail);
 router.put("/forgot-password-handler", forgotPasswordHandler);
+router.delete("/delete-acc", withSignIn, deleteAcc);
 
 module.exports = router;

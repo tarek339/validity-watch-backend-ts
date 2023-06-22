@@ -1,4 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+const Company = require("../../model/companyModel");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+const Property = require("../../model/PropertyModel");
 
 interface ErrorMessage {
   message: string;
@@ -14,11 +19,6 @@ const mongooseErrorHandler = (error: Error) => {
   if (error.errors) errorMessage = Object.values(error.errors)[0].message;
   return errorMessage || error.message;
 };
-
-const Company = require("../../model/companyModel");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
 
 // Sign up company
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -43,6 +43,10 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     await company.save();
+    const property = new Property({
+      companyId: company._id,
+    });
+    await property.save();
 
     const transport = nodemailer.createTransport({
       service: "gmail",
@@ -482,6 +486,16 @@ const forgotPasswordHandler = async (
   }
 };
 
+// delete Acc
+const deleteAcc = async (req: Request, res: Response, next: NextFunction) => {
+  await Company.findbyIdAndDelete(req.params.companyId);
+  const company = await Company.find();
+  res.json({
+    message: "Company has been deleted!",
+    company,
+  });
+};
+
 module.exports = {
   signUp,
   verifyAccount,
@@ -493,4 +507,5 @@ module.exports = {
   changePassword,
   sendForgotPasswordEmail,
   forgotPasswordHandler,
+  deleteAcc,
 };

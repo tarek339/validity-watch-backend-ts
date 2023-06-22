@@ -23,7 +23,7 @@ const companyFormValidation = async (
 ) => {
   try {
     const NameExists = await Company.findOne({
-      compName: req.body.compName,
+      companyName: req.body.companyName,
     });
     if (NameExists) {
       return res.status(422).json({
@@ -39,7 +39,7 @@ const companyFormValidation = async (
     }
 
     const licenceNumExists = await Company.findOne({
-      licenceNum: req.body.licenceNum,
+      communityLicence: req.body.communityLicence,
     });
     if (licenceNumExists) {
       return res.status(422).json({
