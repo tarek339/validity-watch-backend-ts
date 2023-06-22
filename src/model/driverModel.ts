@@ -41,7 +41,7 @@ const driverSchema = new Schema({
   },
 
   licenceTypExpire: {
-    type: Date,
+    type: String,
   },
 
   codeNumber: {
@@ -49,10 +49,10 @@ const driverSchema = new Schema({
   },
 
   codeNumberExpire: {
-    type: Date,
+    type: String,
   },
 
-  driverCardNum: {
+  driverCardNumber: {
     type: String,
     set: (value: string) => {
       return value.toUpperCase();
@@ -60,7 +60,7 @@ const driverSchema = new Schema({
   },
 
   driverCardNumberExpire: {
-    type: Date,
+    type: String,
   },
 });
 
