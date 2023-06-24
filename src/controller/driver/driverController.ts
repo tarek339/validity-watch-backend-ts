@@ -133,7 +133,7 @@ const editDriver = async (req: Request, res: Response, next: NextFunction) => {
       (driver.licenceTypExpire = req.body.licenceTypExpire),
       (driver.codeNumber = req.body.codeNumber.replace(/\s+/g, "")),
       (driver.codeNumberExpire = req.body.codeNumberExpire),
-      (driver.driverCardNum = req.body.driverCardNum.replace(/\s+/g, "")),
+      (driver.driverCardNumber = req.body.driverCardNumber.replace(/\s+/g, "")),
       (driver.driverCardNumberExpire = req.body.driverCardNumberExpire);
 
     await driver.save();

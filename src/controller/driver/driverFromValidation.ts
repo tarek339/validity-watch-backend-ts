@@ -51,7 +51,7 @@ const driverFormValidation = async (
     }
 
     const driverCardNumExists = await Driver.findOne({
-      driverCardNum: req.body.driverCardNum,
+      driverCardNumber: req.body.driverCardNumber,
     });
     if (driverCardNumExists) {
       return res.status(422).json({
