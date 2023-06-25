@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const truckSchema = new Schema({
+const trailerSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
@@ -45,6 +45,6 @@ const truckSchema = new Schema({
   },
 });
 
-const truckModel = model("Truck", truckSchema);
+const trailerModel = model("Trailer", trailerSchema);
 
-module.exports = truckModel;
+module.exports = trailerModel;

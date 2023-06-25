@@ -4,15 +4,15 @@ const {
   getSingleTruck,
   editTruck,
   deleteSingleTruck,
-  deleteAllTrucks,
+  getAllTrucks,
 } = require("../controller/truck/truckController");
-
+const truckFormValidation = require("../controller/truck/truckFormValidation");
 const router = express.Router();
 
-router.post("/sign-up", signUpTruck);
-router.get("/:id", getSingleTruck);
-router.put("/edit/:id", editTruck);
+router.post("/sign-up", truckFormValidation, signUpTruck);
+router.get("/trucks", getAllTrucks);
+router.get("/truck/:id", getSingleTruck);
+router.put("/edit-truck/:id", editTruck);
 router.delete("/delete/:id", deleteSingleTruck);
-router.delete("/", deleteAllTrucks);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const Truck = require("../../model/truckModel");
+const Trailer = require("../../model/trailerModel");
 import { NextFunction, Request, Response } from "express";
 
 interface ErrorMessage {
@@ -16,16 +16,16 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const getAllTrucks = async (
+const getAlltrailers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const trucks = await Truck.find({
+    const trailers = await Trailer.find({
       companyId: req.params.companyId,
     });
-    res.json(trucks);
+    res.json(trailers);
   } catch (err) {
     res.status(422).json({
       message: mongooseErrorHandler(err as Error),
@@ -33,14 +33,14 @@ const getAllTrucks = async (
   }
 };
 
-const getSingleTruck = async (
+const getSingletrailer = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const truck = await Truck.findById(req.params.id);
-    res.json(truck);
+    const trailer = await Trailer.findById(req.params.id);
+    res.json(trailer);
   } catch (err) {
     res.status(422).json({
       message: mongooseErrorHandler(err as Error),
@@ -48,9 +48,13 @@ const getSingleTruck = async (
   }
 };
 
-const signUpTruck = async (req: Request, res: Response, next: NextFunction) => {
+const signUptrailer = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const truck = new Truck({
+    const trailer = new Trailer({
       companyId: req.body.companyId,
       indicator: req.body.indicator.replace(/\s+/g, ""),
       name: req.body.name.replace(/\s+/g, ""),
@@ -60,18 +64,18 @@ const signUpTruck = async (req: Request, res: Response, next: NextFunction) => {
       nextSP: req.body.nextSP,
     });
 
-    await truck.save();
+    await trailer.save();
 
     res.json({
-      message: "Truck successfully added",
-      truck: {
-        _id: truck._id,
-        indicator: truck.indicator,
-        name: truck.name,
-        type: truck.type,
-        weight: truck.weight,
-        nextHU: truck.nextHU,
-        nextSP: truck.nextSP,
+      message: "trailer successfully added",
+      trailer: {
+        _id: trailer._id,
+        indicator: trailer.indicator,
+        name: trailer.name,
+        type: trailer.type,
+        weight: trailer.weight,
+        nextHU: trailer.nextHU,
+        nextSP: trailer.nextSP,
       },
     });
   } catch (err) {
@@ -81,18 +85,18 @@ const signUpTruck = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const deleteSingleTruck = async (
+const deleteSingletrailer = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    await Truck.findByIdAndDelete(req.params.id);
-    const truck = await Truck.find();
+    await Trailer.findByIdAndDelete(req.params.id);
+    const trailer = await Trailer.find();
 
     res.json({
-      message: "Truck deleted",
-      truck,
+      message: "trailer deleted",
+      trailer,
     });
   } catch (err) {
     res.status(422).json({
@@ -101,33 +105,33 @@ const deleteSingleTruck = async (
   }
 };
 
-const deleteAllTrucks = async (
+const deleteAlltrailers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  await Truck.deleteMany();
-  const truck = await Truck.find();
+  await Trailer.deleteMany();
+  const trailer = await Trailer.find();
   res.json({
-    message: "All trucks deleted",
-    truck,
+    message: "All trailers deleted",
+    trailer,
   });
 };
 
-const editTruck = async (req: Request, res: Response, next: NextFunction) => {
+const edittrailer = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const truck = await Truck.findById(req.params.id);
+    const trailer = await Trailer.findById(req.params.id);
 
-    (truck.indicator = req.body.indicator.replace(/\s+/g, "")),
-      (truck.name = req.body.name.replace(/\s+/g, "")),
-      (truck.type = req.body.type.replace(/\s+/g, "")),
-      (truck.weight = req.body.weight),
-      (truck.nextHU = req.body.nextHU),
-      (truck.nextSP = req.body.nextSP),
-      await truck.save();
+    (trailer.indicator = req.body.indicator.replace(/\s+/g, "")),
+      (trailer.name = req.body.name.replace(/\s+/g, "")),
+      (trailer.type = req.body.type.replace(/\s+/g, "")),
+      (trailer.weight = req.body.weight),
+      (trailer.nextHU = req.body.nextHU),
+      (trailer.nextSP = req.body.nextSP),
+      await trailer.save();
     res.json({
-      message: "Truck successfully edited",
-      truck,
+      message: "trailer successfully edited",
+      trailer,
     });
   } catch (err) {
     res.status(422).json({
@@ -137,10 +141,10 @@ const editTruck = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 module.exports = {
-  signUpTruck,
-  getAllTrucks,
-  getSingleTruck,
-  deleteAllTrucks,
-  deleteSingleTruck,
-  editTruck,
+  signUptrailer,
+  getAlltrailers,
+  getSingletrailer,
+  deleteAlltrailers,
+  deleteSingletrailer,
+  edittrailer,
 };
