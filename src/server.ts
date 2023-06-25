@@ -8,6 +8,7 @@ const moment = require("moment");
 const companyRoutes = require("./routes/companyRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const truckRoutes = require("./routes/truckRoutes");
+const trailerRoutes = require("./routes/trailerRoutes");
 
 const app = express();
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/company", companyRoutes);
 app.use("/driver", driverRoutes);
 app.use("/truck", truckRoutes);
+app.use("/trailer", trailerRoutes);
 
 mongoose
   .connect(
