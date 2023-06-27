@@ -47,12 +47,10 @@ const companySchema = new Schema({
 
   password: {
     type: String,
-    required: [true, "Password is required"],
   },
 
   confirmPassword: {
     type: String,
-    required: [true, "Confirm password name is required"],
   },
 
   street: {
@@ -64,12 +62,10 @@ const companySchema = new Schema({
 
   houseNumber: {
     type: Number,
-    required: [true, "House number is required"],
   },
 
   zipCode: {
     type: Number,
-    required: [true, "Zip code is required"],
   },
 
   city: {

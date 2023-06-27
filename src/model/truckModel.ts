@@ -37,11 +37,11 @@ const truckSchema = new Schema({
   },
 
   nextHU: {
-    type: String,
+    type: Date,
   },
 
   nextSP: {
-    type: String,
+    type: Date,
   },
 });
 

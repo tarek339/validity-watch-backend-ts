@@ -29,6 +29,39 @@ const driverSchema = new Schema({
     type: String,
   },
 
+  street: {
+    type: String,
+    set: (value: string) => {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+  },
+
+  houseNumber: {
+    type: Number,
+  },
+
+  zipCode: {
+    type: Number,
+  },
+
+  city: {
+    type: String,
+    set: (value: string) => {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+  },
+
+  birthday: {
+    type: Date,
+  },
+
+  birthPlace: {
+    type: String,
+    set: (value: string) => {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+  },
+
   licenceNumber: {
     type: String,
     set: (value: string) => {
@@ -41,7 +74,7 @@ const driverSchema = new Schema({
   },
 
   licenceTypExpire: {
-    type: String,
+    type: Date,
   },
 
   codeNumber: {
@@ -49,7 +82,7 @@ const driverSchema = new Schema({
   },
 
   codeNumberExpire: {
-    type: String,
+    type: Date,
   },
 
   driverCardNumber: {
@@ -60,7 +93,7 @@ const driverSchema = new Schema({
   },
 
   driverCardNumberExpire: {
-    type: String,
+    type: Date,
   },
 });
 
