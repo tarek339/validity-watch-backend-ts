@@ -22,9 +22,7 @@ const getAllTrucks = async (
   next: NextFunction
 ) => {
   try {
-    const trucks = await Truck.find({
-      companyId: req.params.companyId,
-    });
+    const trucks = await Truck.find({ companyId: req.body.companyId });
     res.json(trucks);
   } catch (err) {
     res.status(422).json({
@@ -51,7 +49,7 @@ const getSingleTruck = async (
 const signUpTruck = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const truck = new Truck({
-      companyId: req.body.companyId,
+      companyId: req.body.id,
       indicator: req.body.indicator.replace(/\s+/g, ""),
       name: req.body.name.replace(/\s+/g, ""),
       type: req.body.type.replace(/\s+/g, ""),

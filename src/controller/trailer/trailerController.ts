@@ -23,7 +23,7 @@ const getAlltrailers = async (
 ) => {
   try {
     const trailers = await Trailer.find({
-      companyId: req.params.companyId,
+      companyId: req.body.companyId,
     });
     res.json(trailers);
   } catch (err) {
@@ -55,7 +55,7 @@ const signUptrailer = async (
 ) => {
   try {
     const trailer = new Trailer({
-      companyId: req.body.companyId,
+      companyId: req.body.id,
       indicator: req.body.indicator.replace(/\s+/g, ""),
       name: req.body.name.replace(/\s+/g, ""),
       type: req.body.type.replace(/\s+/g, ""),

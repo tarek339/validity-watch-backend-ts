@@ -1,14 +1,23 @@
 // import { createServer } from "http";
+import { Request, Response } from "express";
 // import { Server } from "socket.io";
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const moment = require("moment");
-
 const companyRoutes = require("./routes/companyRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const truckRoutes = require("./routes/truckRoutes");
 const trailerRoutes = require("./routes/trailerRoutes");
+const {
+  checkDriverDocsValidation,
+} = require("./controller/driver/notficationDriver");
+const {
+  checkTruckValidation,
+} = require("./controller/truck/notificationTruck");
+const {
+  checkTrailerValidation,
+} = require("./controller/trailer/notificationTrailer");
 
 const app = express();
 app.use(cors());
@@ -17,6 +26,16 @@ app.use("/company", companyRoutes);
 app.use("/driver", driverRoutes);
 app.use("/truck", truckRoutes);
 app.use("/trailer", trailerRoutes);
+
+// run function every 24 hours
+// setInterval(checkDriverDocsValidation, 86400000);
+// setInterval(checkTruckValidation, 86400000);
+// setInterval(checkTrailerValidation, 86400000);
+
+// run for testing
+// checkDriverDocsValidation();
+// checkTruckValidation();
+// checkTrailerValidation();
 
 mongoose
   .connect(
@@ -31,7 +50,7 @@ mongoose
           .format("DD.MM.YYYY, LT")}`
       );
     });
-    app.get("/", (req: any, res: { json: (arg0: string) => void }) => {
+    app.get("/", (req: Request, res: Response) => {
       res.json(
         `server is running on ${port} ${moment()
           .locale("de")
