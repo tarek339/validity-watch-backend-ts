@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 const Company = require("../../model/companyModel");
+const Driver = require("../../model/driverModel");
+const Trailer = require("../../model/trailerModel");
+const Truck = require("../../model/truckModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
@@ -197,7 +200,7 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// edit company data
+// Edit company data
 const editProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const company = await Company.findById(req.body.companyId);
@@ -239,7 +242,7 @@ const editProfile = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-//Edit E-Mail
+// Edit E-Mail
 const editEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const company = await Company.findById(req.body.companyId);
@@ -301,7 +304,7 @@ const editEmail = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// verify password for change password function
+// Verify password for change password function
 const verifyPassword = async (
   req: Request,
   res: Response,
@@ -381,7 +384,7 @@ const changePassword = async (
   }
 };
 
-// send forgot password email
+// Send forgot password email
 const sendForgotPasswordEmail = async (
   req: Request,
   res: Response,
@@ -481,7 +484,7 @@ const forgotPasswordHandler = async (
   }
 };
 
-// delete Acc
+// Delete Acc
 const deleteAcc = async (req: Request, res: Response, next: NextFunction) => {
   await Company.findByIdAndDelete(req.body.companyId);
   const company = await Company.find();
@@ -489,6 +492,18 @@ const deleteAcc = async (req: Request, res: Response, next: NextFunction) => {
     message: "Company has been deleted!",
     company,
   });
+};
+
+// Get company properties
+const getCompanyProperties = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const drivers = await Driver.find({ companyId: req.body.companyId });
+  const trucks = await Truck.find({ companyId: req.body.companyId });
+  const trailers = await Trailer.find({ companyId: req.body.companyId });
+  res.json({ drivers, trucks, trailers });
 };
 
 module.exports = {
@@ -503,4 +518,5 @@ module.exports = {
   sendForgotPasswordEmail,
   forgotPasswordHandler,
   deleteAcc,
+  getCompanyProperties,
 };
