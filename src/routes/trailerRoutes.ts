@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/sign-up", trailerFormValidation, signUptrailer);
 router.get("/trailers", withSignIn, getAlltrailers);
 router.get("/trailer/:id", getSingletrailer);
-router.put("/edit-trailer/:id", edittrailer);
+router.put("/edit-trailer/:id", withSignIn, edittrailer);
 router.delete("/delete/:id", deleteSingletrailer);
 
 module.exports = router;

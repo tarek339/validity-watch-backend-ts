@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/sign-up", driverFormValidation, signUp);
 router.get("/drivers", withSignIn, getCompanyDrivers);
 router.get("/driver/:id", getSingleDriver);
-router.put("/edit/:id", editDriver);
+router.put("/edit/:id", withSignIn, editDriver);
 router.delete("/delete/:id", deleteSingleDriver);
 
 module.exports = router;

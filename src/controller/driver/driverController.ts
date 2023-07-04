@@ -1,5 +1,6 @@
 const Driver = require("../../model/driverModel");
 import { NextFunction, Request, Response } from "express";
+import { socket } from "../../socket";
 
 interface ErrorMessage {
   message: string;
@@ -154,6 +155,10 @@ const editDriver = async (req: Request, res: Response, next: NextFunction) => {
       (driver.driverCardNumberExpire = req.body.driverCardNumberExpire);
 
     await driver.save();
+
+    const drivers = await Driver.find({ companyId: req.body.companyId });
+    socket?.emit("DRIVERS", drivers);
+
     res.json({
       message: "Driver data changed",
       driver,

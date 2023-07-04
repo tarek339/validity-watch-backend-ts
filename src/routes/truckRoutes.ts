@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/sign-up", truckFormValidation, signUpTruck);
 router.get("/trucks", withSignIn, getAllTrucks);
 router.get("/truck/:id", getSingleTruck);
-router.put("/edit-truck/:id", editTruck);
+router.put("/edit-truck/:id", withSignIn, editTruck);
 router.delete("/delete/:id", deleteSingleTruck);
 
 module.exports = router;
