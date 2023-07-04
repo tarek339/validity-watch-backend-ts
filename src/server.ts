@@ -1,6 +1,7 @@
-// import { createServer } from "http";
+import { createServer } from "http";
 import { Request, Response } from "express";
-// import { Server } from "socket.io";
+import { Server } from "socket.io";
+import { setSocket } from "./socket";
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -27,15 +28,31 @@ app.use("/driver", driverRoutes);
 app.use("/truck", truckRoutes);
 app.use("/trailer", trailerRoutes);
 
+app.get("/", (req: Request, res: Response) => {
+  res.json(
+    `server is running on 4500 ${moment()
+      .locale("de")
+      .format("DD.MM.YYYY, LT")}`
+  );
+});
+
 // run function every 24 hours
 // setInterval(checkDriverDocsValidation, 86400000);
 // setInterval(checkTruckValidation, 86400000);
 // setInterval(checkTrailerValidation, 86400000);
 
 // run for testing
-// checkDriverDocsValidation();
+checkDriverDocsValidation();
 // checkTruckValidation();
 // checkTrailerValidation();
+
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
+
+io.on("connection", (socket) => {
+  setSocket(socket);
+  console.log("connection established");
+});
 
 mongoose
   .connect(
@@ -43,30 +60,11 @@ mongoose
   )
   .then(() => {
     const port = process.env.PORT || 4500;
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(
-        `server is running on http://localhost:${port} ${moment()
-          .locale("de")
-          .format("DD.MM.YYYY, LT")}`
-      );
-    });
-    app.get("/", (req: Request, res: Response) => {
-      res.json(
-        `server is running on ${port} ${moment()
+        `server started on http://localhost:${port}, ${moment()
           .locale("de")
           .format("DD.MM.YYYY, LT")}`
       );
     });
   });
-
-// const server = createServer(app);
-// const io = new Server(server, { cors: { origin: "" } });
-
-// const port = 4500;
-// server.listen(port, () => {
-//   console.log(
-//     `server started on http://localhost:${port}, ${moment()
-//       .locale("de")
-//       .format("DD.MM.YYYY, LT")}`
-//   );
-// });

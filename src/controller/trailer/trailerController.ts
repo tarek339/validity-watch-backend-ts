@@ -1,5 +1,6 @@
 const Trailer = require("../../model/trailerModel");
 import { NextFunction, Request, Response } from "express";
+import { socket } from "../../socket";
 
 interface ErrorMessage {
   message: string;
@@ -129,6 +130,8 @@ const edittrailer = async (req: Request, res: Response, next: NextFunction) => {
       (trailer.nextHU = req.body.nextHU),
       (trailer.nextSP = req.body.nextSP),
       await trailer.save();
+    const trailers = await Trailer.find({ companyId: req.body.companyId });
+    socket?.emit("TRAILERS", trailers);
     res.json({
       message: "trailer successfully edited",
       trailer,

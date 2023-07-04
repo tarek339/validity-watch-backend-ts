@@ -1,5 +1,6 @@
 const Truck = require("../../model/truckModel");
 import { NextFunction, Request, Response } from "express";
+import { socket } from "../../socket";
 
 interface ErrorMessage {
   message: string;
@@ -123,6 +124,10 @@ const editTruck = async (req: Request, res: Response, next: NextFunction) => {
       (truck.nextHU = req.body.nextHU),
       (truck.nextSP = req.body.nextSP),
       await truck.save();
+
+    const trucks = await Truck.find({ companyId: req.body.companyId });
+    socket?.emit("TRUCKS", trucks);
+
     res.json({
       message: "Truck successfully edited",
       truck,
