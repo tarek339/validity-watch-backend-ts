@@ -2,7 +2,6 @@ import express from "express";
 
 const {
   signUp,
-  getCompanyDrivers,
   getSingleDriver,
   deleteSingleDriver,
   editDriver,
@@ -12,10 +11,9 @@ const withSignIn = require("../middlewares/withSignIn");
 
 const router = express.Router();
 
-router.post("/sign-up", driverFormValidation, signUp);
-router.get("/drivers", withSignIn, getCompanyDrivers);
-router.get("/driver/:id", getSingleDriver);
+router.post("/sign-up", withSignIn, driverFormValidation, signUp);
+router.get("/driver/:id", withSignIn, getSingleDriver);
 router.put("/edit/:id", withSignIn, editDriver);
-router.delete("/delete/:id", deleteSingleDriver);
+router.delete("/delete/:id", withSignIn, deleteSingleDriver);
 
 module.exports = router;

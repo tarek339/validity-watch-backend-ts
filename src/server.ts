@@ -19,6 +19,9 @@ const {
 const {
   checkTrailerValidation,
 } = require("./controller/trailer/notificationTrailer");
+const Driver = require("./model/driverModel");
+const Truck = require("./model/truckModel");
+const Trailer = require("./model/trailerModel");
 
 const app = express();
 app.use(cors());
@@ -42,16 +45,29 @@ app.get("/", (req: Request, res: Response) => {
 // setInterval(checkTrailerValidation, 86400000);
 
 // run for testing
-checkDriverDocsValidation();
+// checkDriverDocsValidation();
 // checkTruckValidation();
 // checkTrailerValidation();
 
 const server = createServer(app);
 const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
 
-io.on("connection", (socket) => {
+io.use((socket: any, next) => {
+  const companyId = socket.handshake.auth.companyId;
+  socket.companyId = companyId;
+  next();
+});
+
+io.on("connection", (socket: any) => {
   setSocket(socket);
-  console.log("connection established");
+  setInterval(async () => {
+    const drivers = await Driver.find({ companyId: socket.companyId });
+    const trucks = await Truck.find({ companyId: socket.companyId });
+    const trailers = await Trailer.find({ companyId: socket.companyId });
+    socket.emit("DRIVERS", drivers);
+    socket.emit("TRUCKS", trucks);
+    socket.emit("TRAILERS", trailers);
+  }, 86400000);
 });
 
 mongoose
