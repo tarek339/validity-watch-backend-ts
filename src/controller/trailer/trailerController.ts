@@ -49,6 +49,8 @@ const signUptrailer = async (
     });
 
     await trailer.save();
+    const trailers = await Trailer.find({ companyId: req.body.companyId });
+    socket?.emit("TRAILERS", trailers);
 
     res.json({
       message: "trailer successfully added",
@@ -77,6 +79,9 @@ const deleteSingletrailer = async (
   try {
     await Trailer.findByIdAndDelete(req.params.id);
     const trailer = await Trailer.find();
+
+    const trailers = await Trailer.find({ companyId: req.body.companyId });
+    socket?.emit("TRAILERS", trailers);
 
     res.json({
       message: "trailer deleted",
