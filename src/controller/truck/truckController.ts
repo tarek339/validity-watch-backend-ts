@@ -46,6 +46,9 @@ const signUpTruck = async (req: Request, res: Response, next: NextFunction) => {
 
     await truck.save();
 
+    const trucks = await Truck.find({ companyId: req.body.companyId });
+    socket?.emit("TRUCKS", trucks);
+
     res.json({
       message: "Truck successfully added",
       truck: {
@@ -73,6 +76,9 @@ const deleteSingleTruck = async (
   try {
     await Truck.findByIdAndDelete(req.params.id);
     const truck = await Truck.find();
+
+    const trucks = await Truck.find({ companyId: req.body.companyId });
+    socket?.emit("TRUCKS", trucks);
 
     res.json({
       message: "Truck deleted",

@@ -10,8 +10,8 @@ const withSignIn = require("../middlewares/withSignIn");
 const router = express.Router();
 
 router.post("/sign-up", withSignIn, trailerFormValidation, signUptrailer);
-router.get("/trailer/:id", getSingletrailer);
+router.get("/trailer/:id", withSignIn, getSingletrailer);
 router.put("/edit-trailer/:id", withSignIn, edittrailer);
-router.delete("/delete/:id", deleteSingletrailer);
+router.delete("/delete/:id", withSignIn, deleteSingletrailer);
 
 module.exports = router;
