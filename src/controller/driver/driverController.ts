@@ -17,21 +17,6 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const getCompanyDrivers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const drivers = await Driver.find({ companyId: req.body.companyId });
-    res.json(drivers);
-  } catch (err) {
-    res.status(422).json({
-      message: mongooseErrorHandler(err as Error),
-    });
-  }
-};
-
 const getSingleDriver = async (
   req: Request,
   res: Response,
@@ -70,6 +55,8 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     await driver.save();
+    const drivers = await Driver.find({ companyId: req.body.companyId });
+    socket?.emit("DRIVERS", drivers);
 
     res.json({
       message: "Driver successfully created",
@@ -108,7 +95,8 @@ const deleteSingleDriver = async (
   try {
     await Driver.findByIdAndDelete(req.params.id);
     const driver = await Driver.find();
-
+    const drivers = await Driver.find({ companyId: req.body.companyId });
+    socket?.emit("DRIVERS", drivers);
     res.json({
       message: "Driver deleted",
       driver,
@@ -127,6 +115,7 @@ const deleteAllDrivers = async (
 ) => {
   await Driver.deleteMany();
   const driver = await Driver.find();
+
   res.json({
     message: "All driver deleted",
     driver,
@@ -176,5 +165,4 @@ module.exports = {
   deleteAllDrivers,
   deleteSingleDriver,
   editDriver,
-  getCompanyDrivers,
 };

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { socket } from "../../socket";
 const Company = require("../../model/companyModel");
 const Driver = require("../../model/driverModel");
 const Trailer = require("../../model/trailerModel");
@@ -315,10 +316,10 @@ const verifyPassword = async (
 
     if (company.password != req.body.password) {
       return res.status(422).json({
-        message: "password incorrect!",
+        message: "Password incorrect!",
       });
     }
-    res.json({ message: "password verified" });
+    res.json({ message: "Password verified" });
   } catch (err) {
     res.status(422).json({
       message: mongooseErrorHandler(err as Error),
@@ -503,6 +504,9 @@ const getCompanyProperties = async (
   const drivers = await Driver.find({ companyId: req.body.companyId });
   const trucks = await Truck.find({ companyId: req.body.companyId });
   const trailers = await Trailer.find({ companyId: req.body.companyId });
+  socket?.emit("DRIVERS", drivers);
+  socket?.emit("TRUCKS", trucks);
+  socket?.emit("TRAILERS", trailers);
   res.json({ drivers, trucks, trailers });
 };
 

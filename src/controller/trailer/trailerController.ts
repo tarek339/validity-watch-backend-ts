@@ -17,23 +17,6 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const getAlltrailers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const trailers = await Trailer.find({
-      companyId: req.body.companyId,
-    });
-    res.json(trailers);
-  } catch (err) {
-    res.status(422).json({
-      message: mongooseErrorHandler(err as Error),
-    });
-  }
-};
-
 const getSingletrailer = async (
   req: Request,
   res: Response,
@@ -145,7 +128,6 @@ const edittrailer = async (req: Request, res: Response, next: NextFunction) => {
 
 module.exports = {
   signUptrailer,
-  getAlltrailers,
   getSingletrailer,
   deleteAlltrailers,
   deleteSingletrailer,

@@ -1,7 +1,6 @@
 import express from "express";
 const {
   signUptrailer,
-  getAlltrailers,
   getSingletrailer,
   deleteSingletrailer,
   edittrailer,
@@ -10,8 +9,7 @@ const trailerFormValidation = require("../controller/trailer/trailerFormValidati
 const withSignIn = require("../middlewares/withSignIn");
 const router = express.Router();
 
-router.post("/sign-up", trailerFormValidation, signUptrailer);
-router.get("/trailers", withSignIn, getAlltrailers);
+router.post("/sign-up", withSignIn, trailerFormValidation, signUptrailer);
 router.get("/trailer/:id", getSingletrailer);
 router.put("/edit-trailer/:id", withSignIn, edittrailer);
 router.delete("/delete/:id", deleteSingletrailer);

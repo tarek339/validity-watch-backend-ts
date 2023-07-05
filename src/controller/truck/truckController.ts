@@ -17,21 +17,6 @@ const mongooseErrorHandler = (error: Error) => {
   return errorMessage || error.message;
 };
 
-const getAllTrucks = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const trucks = await Truck.find({ companyId: req.body.companyId });
-    res.json(trucks);
-  } catch (err) {
-    res.status(422).json({
-      message: mongooseErrorHandler(err as Error),
-    });
-  }
-};
-
 const getSingleTruck = async (
   req: Request,
   res: Response,
@@ -141,7 +126,6 @@ const editTruck = async (req: Request, res: Response, next: NextFunction) => {
 
 module.exports = {
   signUpTruck,
-  getAllTrucks,
   getSingleTruck,
   deleteAllTrucks,
   deleteSingleTruck,
