@@ -1,10 +1,10 @@
 {
   "name": "validity-watch-backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "build": "rimraf ./build && tsc",
-    "start": "nodemon server.js"
+    "start": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
